@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html ng-app="studentApp">
+<head>
+ <title>Student Details</title>
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+ <div ng-controller="StudentController">
+ <h2>Student Details</h2>
+ <label>Enter the number of students:</label>
+ <input type="number" ng-model="numStudents" ng-change="generateStudents()"><br>
+ <div ng-repeat="student in students">
+ <h3>Student {{$index + 1}}</h3>
+ <p>Name: {{student.name}}</p>
+ <p>CGPA: {{student.cgpa}}</p>
+ </div>
+ <p>Total Students: {{numStudents}}</p>
+ </div>
+ <script>
+ var app = angular.module('studentApp', []);
+ app.controller('StudentController', function($scope) {
+ $scope.numStudents = 0;
+ $scope.students = [];
+ $scope.generateStudents = function() {
+ $scope.students = [];
+ for (var i = 0; i < $scope.numStudents; i++) {
+ $scope.students.push({
+ name: "Student " + (i + 1),
+ cgpa: Math.floor(Math.random() * 4) + 1 // Random CGPA between 1 and 4
+ });
+ }
+ };
+ });
+ </script>
+</body>
+</html>
