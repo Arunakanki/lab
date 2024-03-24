@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="employeeApp">
+<head>
+ <title>Employee List</title>
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+ <div ng-controller="EmployeeController">
+ <h2>Employee List</h2>
+ <label>Search by Name:</label>
+ <input type="text" ng-model="searchName"><br>
+ <label>Search by Salary:</label>
+ <input type="number" ng-model="searchSalary"><br>
+ <ul>
+ <li ng-repeat="employee in filteredEmployees">
+ <span>Name: {{employee.name}}, Salary: {{employee.salary}}</span>
+ </li>
+ </ul>
+ </div>
+ <script>
+ var app = angular.module('employeeApp', []);
+ app.controller('EmployeeController', function($scope) {
+ $scope.employees = [
+ { name: 'John', salary: 50000 },
+ { name: 'Jane', salary: 60000 },
+ { name: 'Doe', salary: 55000 },
+ { name: 'Smith', salary: 70000 },
+ { name: 'Alice', salary: 65000 }
+ ];
+ $scope.searchName = '';
+ $scope.searchSalary = '';
+ $scope.filteredEmployees = $scope.employees;
+ $scope.$watchGroup(['searchName', 'searchSalary'], function(newValues, oldValues) {
+ var name = newValues[0];
+ var salary = newValues[1];
+ $scope.filteredEmployees = $scope.employees.filter(function(employee) {
+ return employee.name.toLowerCase().includes(name.toLowerCase()) &&
+ (salary === '' || employee.salary >= salary);
+ });
+ });
+ });
+ </script>
+</body>
+</html>
